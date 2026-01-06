@@ -472,7 +472,7 @@ export default function OrdersPage() {
           }
         }}
       >
-        <SheetContent side="right" className="w-full sm:max-w-lg">
+        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader>
             <SheetTitle>Detail Pesanan</SheetTitle>
           </SheetHeader>
@@ -575,72 +575,72 @@ export default function OrdersPage() {
 
               {(detail.status === "OPEN" ||
                 detail.status === "AWAITING_PAYMENT") && (
-                <div className="rounded-lg border p-4 space-y-3">
-                  <div className="font-medium">Tandai Lunas (Cash)</div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="cash">Uang Diterima</Label>
-                    <Input
-                      id="cash"
-                      type="number"
-                      min={0}
-                      value={cashInput}
-                      onChange={(e) => setCashInput(e.target.value)}
-                      placeholder={String(detail.total)}
-                    />
-                  </div>
-                  <div className="text-sm">
-                    {receivedAmount >= (detail.total ?? 0) ? (
-                      <span>
-                        Kembalian:{" "}
-                        <span className="font-semibold">
-                          {formatIDR(receivedAmount - detail.total)}
+                  <div className="rounded-lg border p-4 space-y-3">
+                    <div className="font-medium">Tandai Lunas (Cash)</div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="cash">Uang Diterima</Label>
+                      <Input
+                        id="cash"
+                        type="number"
+                        min={0}
+                        value={cashInput}
+                        onChange={(e) => setCashInput(e.target.value)}
+                        placeholder={String(detail.total)}
+                      />
+                    </div>
+                    <div className="text-sm">
+                      {receivedAmount >= (detail.total ?? 0) ? (
+                        <span>
+                          Kembalian:{" "}
+                          <span className="font-semibold">
+                            {formatIDR(receivedAmount - detail.total)}
+                          </span>
                         </span>
-                      </span>
-                    ) : (
-                      <span className="text-destructive">
-                        Kurang: {formatIDR(kurang)}
-                      </span>
+                      ) : (
+                        <span className="text-destructive">
+                          Kurang: {formatIDR(kurang)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setCashInput(String(detail.total));
+                        }}
+                      >
+                        Isi Total
+                      </Button>
+                      <Button
+                        onClick={handleSetPaidCash}
+                        disabled={
+                          paying ||
+                          !canCashPay ||
+                          !Number.isFinite(receivedAmount) ||
+                          receivedAmount < detail.total
+                        }
+                      >
+                        {paying ? (
+                          <>
+                            <Loader2 className="mr-2 size-4 animate-spin" />
+                            Memproses…
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="mr-2 size-4" />
+                            Mark as Paid (Cash)
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    {!canCashPay && (
+                      <div className="text-xs text-muted-foreground">
+                        Tombol dinonaktifkan karena order sudah dibayar atau ada
+                        payment non-tunai.
+                      </div>
                     )}
                   </div>
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        setCashInput(String(detail.total));
-                      }}
-                    >
-                      Isi Total
-                    </Button>
-                    <Button
-                      onClick={handleSetPaidCash}
-                      disabled={
-                        paying ||
-                        !canCashPay ||
-                        !Number.isFinite(receivedAmount) ||
-                        receivedAmount < detail.total
-                      }
-                    >
-                      {paying ? (
-                        <>
-                          <Loader2 className="mr-2 size-4 animate-spin" />
-                          Memproses…
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="mr-2 size-4" />
-                          Mark as Paid (Cash)
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  {!canCashPay && (
-                    <div className="text-xs text-muted-foreground">
-                      Tombol dinonaktifkan karena order sudah dibayar atau ada
-                      payment non-tunai.
-                    </div>
-                  )}
-                </div>
-              )}
+                )}
 
               <div className="flex justify-end gap-2">
                 <Button variant="secondary" onClick={() => setOpenSheet(false)}>
