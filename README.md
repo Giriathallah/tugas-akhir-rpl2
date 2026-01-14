@@ -1,3 +1,10 @@
+Kelompok 5
+
+1. Annas Rizky - 50422231 (Project Manager)
+2. Annaufal Arifa - 50422232 (backend programmer)
+3. Muhamad Ikhwan Fadilah - 50422948 (frontend | ui/ux design)
+4. Muhammad Giri Sulthan Athallah - 51422065 (Fullstack developer)
+
 Resto Bunda – Setup Lokal
 
 Prasyarat
